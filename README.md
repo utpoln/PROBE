@@ -67,16 +67,44 @@ PROBE/
 │   ├── fig6_precision_recall.pdf      # Precision-Recall scatter
 │   └── fig7_f1_boxplot.pdf            # Per-protein F1 distributions
 │
-├── probe_error_analysis/              # Error categorization results
-├── probe_statistics/                  # Statistical test results
+├── probe_error_analysis/
+│   ├── error_analysis_raw.csv              # Per-record error classification (150,000 rows)
+│   ├── error_cases_sampled.csv             # 50 sampled failure cases per model
+│   ├── error_counts_per_model.csv          # Error category counts per model
+│   ├── error_pivot.csv                     # Error % pivot table
+│   ├── hallucination_by_namespace.csv      # HR by model and namespace
+│   ├── error_by_organism.csv               # Error counts by organism
+│   ├── error_by_prompt.csv                 # Error counts by prompt format
+│   └── PROBE_error_analysis.xlsx           # All error tables in one workbook
+│
+├── probe_statistics/
+│   ├── test1_pairwise_models.csv           # Wilcoxon results (45 pairs)
+│   ├── test2_prompt_format.csv             # Friedman test results (10 models)
+│   ├── test3_organism_effect.csv           # Kruskal-Wallis organism results
+│   ├── test4_namespace_effect.csv          # Kruskal-Wallis namespace results
+│   ├── significance_matrix_pvalues.csv     # 10×10 p-value matrix
+│   ├── effect_size_matrix_cohens_d.csv     # 10×10 Cohen's d matrix
+│   └── PROBE_statistical_tests.xlsx        # All statistical results in one workbook
+│
+├── probe_results/
+│   ├── llama3.1-8b.jsonl                   # 15,000 raw LLM responses
+│   ├── llama3.3-70b.jsonl                  # 15,000 raw LLM responses
+│   ├── mistral-7b.jsonl                    # 15,000 raw LLM responses
+│   ├── mistral-large-123b.jsonl            # 15,000 raw LLM responses
+│   ├── mixtral-8x7b.jsonl                  # 15,000 raw LLM responses
+│   ├── qwen2.5-7b.jsonl                    # 15,000 raw LLM responses
+│   ├── qwen2.5-72b.jsonl                   # 15,000 raw LLM responses
+│   ├── Qwen_Qwen3-32B.jsonl                # 15,000 raw LLM responses
+│   ├── gemma3-12b.jsonl                    # 15,000 raw LLM responses
+│   └── google_gemma-4-31b.jsonl            # 15,000 raw LLM responses
+│                                           # Total: 150,000 API call records
 │
 ├── requirements.txt
 ├── .gitignore
 └── README.md
 ```
 > **Note:** The manuscript and LaTeX source will be released upon journal acceptance.
-> Raw LLM response files (`probe_results/`, ~400MB) are not included due to size constraints
-> but are available from the corresponding author upon request.
+> All 150,000 raw LLM response records are included in `probe_results/` for full reproducibility.
 
 ---
 
