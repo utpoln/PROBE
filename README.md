@@ -400,9 +400,7 @@ If you use PROBE in your research, please cite:
 
 ```bibtex
 @article{naha2025probe,
-  title={{PROBE}: A Cross-Organism Benchmark for Evaluating
-         General-Purpose Large Language Models on Zero-Shot
-         Gene Ontology Protein Function Prediction},
+  title={{PROBE}: A Cross-Organism Benchmark for Evaluating General-Purpose Large Language Models on Gene Ontology Protein Function},
   author={Naha, Kallol and Jamil, Hasan M.},
   journal={BMC Bioinformatics},
   year={2025},
