@@ -1,0 +1,11 @@
+model,friedman_stat,p_value,significant,sig_stars,best_prompt,best_prompt_f1,f1_P1_zeroshot,f1_P2_constrained,f1_P3_fewshot,f1_P4_cot,f1_P5_selection
+Qwen3 32B,37.9717,0.0,True,***,P2_constrained,0.0845,0.0822,0.0845,0.0704,0.0742,0.0664
+Gemma3 12B,817.7376,0.0,True,***,P5_selection,0.0754,0.0205,0.0145,0.0309,0.0195,0.0754
+Gemma-4 31B,442.316,0.0,True,***,P5_selection,0.1003,0.0502,0.0587,0.0733,0.0603,0.1003
+Llama 3.1 8B,93.21,0.0,True,***,P5_selection,0.0787,0.0574,0.0587,0.0631,0.0499,0.0787
+Llama 3.3 70B,81.9927,0.0,True,***,P4_cot,0.1043,0.088,0.078,0.0958,0.1043,0.0949
+Mistral 7B,283.3659,0.0,True,***,P5_selection,0.0615,0.0405,0.0323,0.0367,0.0373,0.0615
+Mistral Large 123B,44.1676,0.0,True,***,P2_constrained,0.0999,0.0889,0.0999,0.0839,0.095,0.0992
+Mixtral 8x7B,222.9351,0.0,True,***,P5_selection,0.087,0.0536,0.0489,0.0534,0.05,0.087
+Qwen2.5 7B,178.6514,0.0,True,***,P5_selection,0.0655,0.0346,0.033,0.0442,0.0409,0.0655
+Qwen2.5 72B,27.0316,2e-05,True,***,P5_selection,0.0899,0.0824,0.0865,0.0825,0.0877,0.0899

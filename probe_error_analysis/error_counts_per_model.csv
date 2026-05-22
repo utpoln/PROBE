@@ -1,0 +1,80 @@
+model_label,primary_error,count,total,percentage
+Gemma-4 31B,complete_hallucination,1550,15000,10.33
+Gemma-4 31B,complete_miss,10185,15000,67.9
+Gemma-4 31B,correct,42,15000,0.28
+Gemma-4 31B,empty_response,421,15000,2.81
+Gemma-4 31B,partial_match_good,485,15000,3.23
+Gemma-4 31B,partial_match_high_precision,230,15000,1.53
+Gemma-4 31B,partial_match_high_recall,1018,15000,6.79
+Gemma-4 31B,partial_match_poor,1069,15000,7.13
+Gemma3 12B,complete_hallucination,1627,15000,10.85
+Gemma3 12B,complete_miss,11708,15000,78.05
+Gemma3 12B,correct,9,15000,0.06
+Gemma3 12B,empty_response,101,15000,0.67
+Gemma3 12B,partial_match_good,146,15000,0.97
+Gemma3 12B,partial_match_high_precision,85,15000,0.57
+Gemma3 12B,partial_match_high_recall,672,15000,4.48
+Gemma3 12B,partial_match_poor,652,15000,4.35
+Llama 3.1 8B,complete_hallucination,994,15000,6.63
+Llama 3.1 8B,complete_miss,11375,15000,75.83
+Llama 3.1 8B,correct,26,15000,0.17
+Llama 3.1 8B,empty_response,151,15000,1.01
+Llama 3.1 8B,partial_match_good,409,15000,2.73
+Llama 3.1 8B,partial_match_high_precision,201,15000,1.34
+Llama 3.1 8B,partial_match_high_recall,880,15000,5.87
+Llama 3.1 8B,partial_match_poor,964,15000,6.43
+Llama 3.3 70B,complete_hallucination,720,15000,4.8
+Llama 3.3 70B,complete_miss,9978,15000,66.52
+Llama 3.3 70B,correct,41,15000,0.27
+Llama 3.3 70B,empty_response,131,15000,0.87
+Llama 3.3 70B,partial_match_good,539,15000,3.59
+Llama 3.3 70B,partial_match_high_precision,238,15000,1.59
+Llama 3.3 70B,partial_match_high_recall,1650,15000,11.0
+Llama 3.3 70B,partial_match_poor,1703,15000,11.35
+Mistral 7B,complete_hallucination,562,15000,3.75
+Mistral 7B,complete_miss,11922,15000,79.48
+Mistral 7B,empty_response,4,15000,0.03
+Mistral 7B,partial_match_good,62,15000,0.41
+Mistral 7B,partial_match_high_precision,24,15000,0.16
+Mistral 7B,partial_match_high_recall,1308,15000,8.72
+Mistral 7B,partial_match_poor,1118,15000,7.45
+Mistral Large 123B,complete_hallucination,1239,15000,8.26
+Mistral Large 123B,complete_miss,9509,15000,63.39
+Mistral Large 123B,correct,102,15000,0.68
+Mistral Large 123B,empty_response,269,15000,1.79
+Mistral Large 123B,partial_match_good,605,15000,4.03
+Mistral Large 123B,partial_match_high_precision,318,15000,2.12
+Mistral Large 123B,partial_match_high_recall,1478,15000,9.85
+Mistral Large 123B,partial_match_poor,1480,15000,9.87
+Mixtral 8x7B,complete_hallucination,721,15000,4.81
+Mixtral 8x7B,complete_miss,10672,15000,71.15
+Mixtral 8x7B,correct,32,15000,0.21
+Mixtral 8x7B,empty_response,413,15000,2.75
+Mixtral 8x7B,partial_match_good,212,15000,1.41
+Mixtral 8x7B,partial_match_high_precision,114,15000,0.76
+Mixtral 8x7B,partial_match_high_recall,1460,15000,9.73
+Mixtral 8x7B,partial_match_poor,1376,15000,9.17
+Qwen2.5 72B,complete_hallucination,855,15000,5.7
+Qwen2.5 72B,complete_miss,9487,15000,63.25
+Qwen2.5 72B,correct,76,15000,0.51
+Qwen2.5 72B,empty_response,927,15000,6.18
+Qwen2.5 72B,partial_match_good,496,15000,3.31
+Qwen2.5 72B,partial_match_high_precision,219,15000,1.46
+Qwen2.5 72B,partial_match_high_recall,1503,15000,10.02
+Qwen2.5 72B,partial_match_poor,1437,15000,9.58
+Qwen2.5 7B,complete_hallucination,3287,15000,21.91
+Qwen2.5 7B,complete_miss,9300,15000,62.0
+Qwen2.5 7B,correct,88,15000,0.59
+Qwen2.5 7B,empty_response,871,15000,5.81
+Qwen2.5 7B,partial_match_good,379,15000,2.53
+Qwen2.5 7B,partial_match_high_precision,292,15000,1.95
+Qwen2.5 7B,partial_match_high_recall,290,15000,1.93
+Qwen2.5 7B,partial_match_poor,493,15000,3.29
+Qwen3 32B,complete_hallucination,1427,15000,9.51
+Qwen3 32B,complete_miss,8924,15000,59.49
+Qwen3 32B,correct,88,15000,0.59
+Qwen3 32B,empty_response,1517,15000,10.11
+Qwen3 32B,partial_match_good,477,15000,3.18
+Qwen3 32B,partial_match_high_precision,327,15000,2.18
+Qwen3 32B,partial_match_high_recall,1158,15000,7.72
+Qwen3 32B,partial_match_poor,1082,15000,7.21

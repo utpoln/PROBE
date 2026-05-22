@@ -1,0 +1,46 @@
+model_A,model_B,mean_f1_A,mean_f1_B,wilcoxon_stat,p_raw,p_corrected,significant,cohens_d,effect_size,better_model,sig_stars
+Gemma-4 31B,Gemma3 12B,0.0685,0.0321,18372.0,0.0,0.0,True,0.6379,medium,Gemma-4 31B,***
+Llama 3.1 8B,Qwen3 32B,0.0615,0.0755,101343.0,0.0,0.0,True,-0.1975,negligible,Qwen3 32B,***
+Llama 3.3 70B,Mistral 7B,0.0922,0.0416,26532.5,0.0,0.0,True,0.7584,medium,Llama 3.3 70B,***
+Llama 3.3 70B,Mixtral 8x7B,0.0922,0.0586,53039.5,0.0,0.0,True,0.4714,small,Llama 3.3 70B,***
+Llama 3.3 70B,Qwen2.5 7B,0.0922,0.0437,31994.5,0.0,0.0,True,0.6858,medium,Llama 3.3 70B,***
+Llama 3.3 70B,Qwen3 32B,0.0922,0.0755,111851.0,0.0,0.0,True,0.2123,small,Llama 3.3 70B,***
+Mistral 7B,Mistral Large 123B,0.0416,0.0934,27825.5,0.0,0.0,True,-0.7423,medium,Mistral Large 123B,***
+Mistral 7B,Mixtral 8x7B,0.0416,0.0586,70338.5,0.0,0.0,True,-0.3269,small,Mixtral 8x7B,***
+Qwen2.5 72B,Qwen3 32B,0.0858,0.0755,112868.5,0.0,0.0,True,0.1317,negligible,Qwen2.5 72B,***
+Mistral 7B,Qwen2.5 72B,0.0416,0.0858,23796.5,0.0,0.0,True,-0.6688,medium,Qwen2.5 72B,***
+Mistral Large 123B,Mixtral 8x7B,0.0934,0.0586,49071.0,0.0,0.0,True,0.4692,small,Mistral Large 123B,***
+Mistral Large 123B,Qwen2.5 7B,0.0934,0.0437,27163.0,0.0,0.0,True,0.6751,medium,Mistral Large 123B,***
+Mistral Large 123B,Qwen3 32B,0.0934,0.0755,93310.0,0.0,0.0,True,0.2201,small,Mistral Large 123B,***
+Mixtral 8x7B,Qwen2.5 72B,0.0586,0.0858,53896.0,0.0,0.0,True,-0.3849,small,Qwen2.5 72B,***
+Mixtral 8x7B,Qwen2.5 7B,0.0586,0.0437,79571.0,0.0,0.0,True,0.2618,small,Mixtral 8x7B,***
+Mixtral 8x7B,Qwen3 32B,0.0586,0.0755,97033.5,0.0,0.0,True,-0.2555,small,Qwen3 32B,***
+Qwen2.5 72B,Qwen2.5 7B,0.0858,0.0437,25197.0,0.0,0.0,True,0.6005,medium,Qwen2.5 72B,***
+Mistral 7B,Qwen3 32B,0.0416,0.0755,45756.0,0.0,0.0,True,-0.5527,medium,Qwen3 32B,***
+Llama 3.1 8B,Qwen2.5 72B,0.0615,0.0858,72715.5,0.0,0.0,True,-0.3236,small,Qwen2.5 72B,***
+Llama 3.1 8B,Qwen2.5 7B,0.0615,0.0437,67940.5,0.0,0.0,True,0.2874,small,Llama 3.1 8B,***
+Gemma3 12B,Llama 3.1 8B,0.0321,0.0615,36002.5,0.0,0.0,True,-0.5368,medium,Llama 3.1 8B,***
+Gemma-4 31B,Llama 3.3 70B,0.0685,0.0922,81460.0,0.0,0.0,True,-0.3064,small,Llama 3.3 70B,***
+Gemma-4 31B,Mistral 7B,0.0685,0.0416,45418.5,0.0,0.0,True,0.4506,small,Gemma-4 31B,***
+Gemma-4 31B,Mistral Large 123B,0.0685,0.0934,64860.5,0.0,0.0,True,-0.311,small,Mistral Large 123B,***
+Gemma-4 31B,Mixtral 8x7B,0.0685,0.0586,105947.0,0.0,0.0,True,0.1535,negligible,Gemma-4 31B,***
+Gemma-4 31B,Qwen2.5 72B,0.0685,0.0858,76662.0,0.0,0.0,True,-0.2251,small,Qwen2.5 72B,***
+Gemma-4 31B,Qwen2.5 7B,0.0685,0.0437,41409.5,0.0,0.0,True,0.3872,small,Gemma-4 31B,***
+Llama 3.1 8B,Mistral Large 123B,0.0615,0.0934,59494.5,0.0,0.0,True,-0.407,small,Mistral Large 123B,***
+Gemma3 12B,Llama 3.3 70B,0.0321,0.0922,13555.5,0.0,0.0,True,-0.9339,large,Llama 3.3 70B,***
+Gemma3 12B,Mistral 7B,0.0321,0.0416,72630.0,0.0,0.0,True,-0.2277,small,Mistral 7B,***
+Qwen2.5 7B,Qwen3 32B,0.0437,0.0755,48307.5,0.0,0.0,True,-0.4846,small,Qwen3 32B,***
+Gemma3 12B,Mixtral 8x7B,0.0321,0.0586,30337.5,0.0,0.0,True,-0.5422,medium,Mixtral 8x7B,***
+Gemma3 12B,Qwen2.5 72B,0.0321,0.0858,11016.0,0.0,0.0,True,-0.843,large,Qwen2.5 72B,***
+Gemma3 12B,Qwen2.5 7B,0.0321,0.0437,66838.5,0.0,0.0,True,-0.2397,small,Qwen2.5 7B,***
+Gemma3 12B,Qwen3 32B,0.0321,0.0755,25056.5,0.0,0.0,True,-0.7385,medium,Qwen3 32B,***
+Llama 3.1 8B,Llama 3.3 70B,0.0615,0.0922,68209.0,0.0,0.0,True,-0.4059,small,Llama 3.3 70B,***
+Llama 3.1 8B,Mistral 7B,0.0615,0.0416,74671.5,0.0,0.0,True,0.346,small,Llama 3.1 8B,***
+Gemma3 12B,Mistral Large 123B,0.0321,0.0934,14213.5,0.0,0.0,True,-0.9079,large,Mistral Large 123B,***
+Gemma-4 31B,Llama 3.1 8B,0.0685,0.0615,106029.5,6e-06,0.000265,True,0.1008,negligible,Gemma-4 31B,***
+Mistral Large 123B,Qwen2.5 72B,0.0934,0.0858,129762.5,1.1e-05,0.000507,True,0.0894,negligible,Mistral Large 123B,***
+Llama 3.3 70B,Qwen2.5 72B,0.0922,0.0858,150530.0,0.00011,0.00497,True,0.0778,negligible,Llama 3.3 70B,**
+Gemma-4 31B,Qwen3 32B,0.0685,0.0755,122140.0,0.000134,0.006033,True,-0.0962,negligible,Qwen3 32B,**
+Mistral 7B,Qwen2.5 7B,0.0416,0.0437,118858.0,0.558554,1.0,False,-0.0393,negligible,Qwen2.5 7B,ns
+Llama 3.3 70B,Mistral Large 123B,0.0922,0.0934,169960.5,0.315718,1.0,False,-0.0139,negligible,Mistral Large 123B,ns
+Llama 3.1 8B,Mixtral 8x7B,0.0615,0.0586,138645.5,0.178861,1.0,False,0.047,negligible,Llama 3.1 8B,ns

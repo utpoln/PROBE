@@ -1,0 +1,31 @@
+model_label,namespace,hallucination_rate
+Gemma-4 31B,biological_process,0.4919
+Gemma-4 31B,cellular_component,0.2268
+Gemma-4 31B,molecular_function,0.5332
+Gemma3 12B,biological_process,0.5307
+Gemma3 12B,cellular_component,0.4424
+Gemma3 12B,molecular_function,0.5401
+Llama 3.1 8B,biological_process,0.4892
+Llama 3.1 8B,cellular_component,0.2875
+Llama 3.1 8B,molecular_function,0.402
+Llama 3.3 70B,biological_process,0.4994
+Llama 3.3 70B,cellular_component,0.1774
+Llama 3.3 70B,molecular_function,0.4683
+Mistral 7B,biological_process,0.5632
+Mistral 7B,cellular_component,0.39
+Mistral 7B,molecular_function,0.5161
+Mistral Large 123B,biological_process,0.4755
+Mistral Large 123B,cellular_component,0.1727
+Mistral Large 123B,molecular_function,0.4634
+Mixtral 8x7B,biological_process,0.5302
+Mixtral 8x7B,cellular_component,0.3271
+Mixtral 8x7B,molecular_function,0.5128
+Qwen2.5 72B,biological_process,0.4226
+Qwen2.5 72B,cellular_component,0.1198
+Qwen2.5 72B,molecular_function,0.3769
+Qwen2.5 7B,biological_process,0.5595
+Qwen2.5 7B,cellular_component,0.3175
+Qwen2.5 7B,molecular_function,0.5464
+Qwen3 32B,biological_process,0.4256
+Qwen3 32B,cellular_component,0.1715
+Qwen3 32B,molecular_function,0.4183

@@ -1,0 +1,21 @@
+# PROBE: Protein Function Benchmark Evaluation
+# Python 3.8+
+
+# API and data collection
+openai>=1.0.0
+tqdm>=4.65.0
+
+# Data processing and evaluation
+pandas>=1.5.0
+numpy>=1.23.0
+openpyxl>=3.1.0
+
+# Statistical testing
+scipy>=1.10.0
+
+# Visualization
+matplotlib>=3.7.0
+seaborn>=0.12.0
+
+# Optional: for dataset preparation
+biopython>=1.81
