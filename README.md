@@ -67,14 +67,16 @@ PROBE/
 │   ├── fig6_precision_recall.pdf      # Precision-Recall scatter
 │   └── fig7_f1_boxplot.pdf            # Per-protein F1 distributions
 │
-├── paper/
-│   ├── probe_paper_final.tex          # LaTeX manuscript
-│   └── references.bib                 # Bibliography (37 entries)
+├── probe_error_analysis/              # Error categorization results
+├── probe_statistics/                  # Statistical test results
 │
 ├── requirements.txt
 ├── .gitignore
 └── README.md
 ```
+> **Note:** The manuscript and LaTeX source will be released upon journal acceptance.
+> Raw LLM response files (`probe_results/`, ~400MB) are not included due to size constraints
+> but are available from the corresponding author upon request.
 
 ---
 
