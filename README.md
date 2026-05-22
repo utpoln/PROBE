@@ -1,4 +1,4 @@
-# PROBE: PROBE: A Cross-Organism Benchmark for Evaluating General-Purpose Large Language Models on Gene Ontology Protein Function
+# PROBE: A Cross-Organism Benchmark for Evaluating General-Purpose Large Language Models on Gene Ontology Protein Function
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
@@ -172,6 +172,98 @@ All evaluated at T=0, max 512 tokens, no system prompt, inference only.
 Each protein is queried 5 prompts × 3 namespaces = 15 times per model.  
 Total: 1,000 × 15 × 10 = **150,000 API calls**.
 
+### Representative Prompt Examples (TP53, *H. sapiens*, Molecular Function)
+
+**P1 — Zero-shot direct**
+```
+You are an expert molecular biologist.
+
+Protein: TP53
+Full name: Cellular tumor antigen p53
+Organism: Homo sapiens (Human)
+Known function: Acts as a tumor suppressor. Induces growth arrest
+or apoptosis depending on physiological circumstances and cell type.
+
+List the Gene Ontology (GO) Molecular Function terms that best
+describe this protein. Format each as: GO:XXXXXXX | term name
+```
+
+**P2 — Constrained zero-shot**
+```
+[Same context block as P1]
+
+Task: Predict ONLY the Gene Ontology Molecular Function (GO MF) terms.
+Rules:
+- List only experimentally supported functions
+- Format each term as: GO:XXXXXXX | term name
+- Do not include BP or CC terms
+- Output only the GO terms, nothing else
+```
+
+**P3 — Few-shot (3-shot)**
+```
+Example 1:
+Protein: TP53, Organism: Homo sapiens
+GO Molecular Function terms:
+GO:0003700 | DNA-binding transcription factor activity
+GO:0046872 | metal ion binding
+GO:0042802 | identical protein binding
+
+Example 2:
+Protein: EGFR, Organism: Homo sapiens
+GO Molecular Function terms:
+GO:0004714 | transmembrane receptor protein tyrosine kinase activity
+GO:0005515 | protein binding
+GO:0016301 | kinase activity
+
+Example 3:
+Protein: ACT1, Organism: Saccharomyces cerevisiae
+GO Molecular Function terms:
+GO:0005524 | ATP binding
+GO:0003779 | actin binding
+GO:0005198 | structural molecule activity
+
+Now predict for: [same context block as P1]
+List GO Molecular Function terms. Format: GO:XXXXXXX | term name
+```
+
+**P4 — Chain-of-thought**
+```
+[Same context block as P1]
+
+Think step by step about what Molecular Function GO terms apply:
+Step 1: What is the protein's primary biochemical activity?
+Step 2: What molecular processes does it participate in?
+Step 3: Based on your reasoning, list the GO Molecular Function terms.
+
+Format final answer as: GO:XXXXXXX | term name
+```
+
+**P5 — Candidate selection**
+```
+[Same context block as P1]
+
+From the following GO Molecular Function terms, select ALL that apply:
+GO:0003700 | DNA-binding transcription factor activity
+GO:0004672 | protein kinase activity
+GO:0005515 | protein binding
+GO:0005524 | ATP binding
+GO:0003677 | DNA binding
+GO:0046872 | metal ion binding
+GO:0004722 | protein serine/threonine phosphatase activity
+GO:0016301 | kinase activity
+GO:0003723 | RNA binding
+GO:0004725 | protein tyrosine phosphatase activity
+GO:0003779 | actin binding
+GO:0005198 | structural molecule activity
+GO:0008270 | zinc ion binding
+GO:0016787 | hydrolase activity
+GO:0016740 | transferase activity
+
+List only matching terms as: GO:XXXXXXX | term name
+If none apply, write: NONE
+```
+
 ---
 
 ## Reproduce Results
@@ -250,7 +342,7 @@ python scripts/llm_prompting.py \
   --model llama3.1:8b
 ```
 
-> **Hardware requirements:** 7B models run on 8GB VRAM. 70B models require 40GB+ VRAM or CPU offloading. 
+> **Hardware requirements:** 7B models run on 8GB VRAM. 70B models require 40GB+ VRAM or CPU offloading.
 
 #### Option C — Any OpenAI-compatible API
 
