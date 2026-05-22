@@ -1,4 +1,4 @@
-# PROBE: A Cross-Organism Benchmark for Evaluating General-Purpose LLMs on Zero-Shot Gene Ontology Protein Function Prediction
+# PROBE: PROBE: A Cross-Organism Benchmark for Evaluating General-Purpose Large Language Models on Gene Ontology Protein Function
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
