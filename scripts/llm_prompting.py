@@ -4,7 +4,7 @@ Cross-Organism Evaluation of General-Purpose LLMs for GO-Based
 Protein Function Prediction
 
 Usage:
-  python llm_prompting.py --api_key YOUR_KEY --model phi4-reasoning:14b
+  python llm_prompting.py --api_key YOUR_KEY --model google/gemma-4-31b
   python llm_prompting.py --api_key YOUR_KEY --all_models
   python llm_prompting.py --api_key YOUR_KEY --all_models --limit 50
 """
@@ -23,19 +23,28 @@ from tqdm import tqdm
 # CONFIG
 # ─────────────────────────────────────────────
 
-BASE_URL    = "https://mindrouter.uidaho.edu/v1"
+# ── API Endpoint ──────────────────────────────────────────────
+# Option 1: University of Idaho MindRouter (internal access only)
+BASE_URL_MINDROUTER = "https://mindrouter.uidaho.edu/v1"
+# Option 2: Ollama (public, run models locally — https://ollama.ai)
+BASE_URL_OLLAMA     = "http://localhost:11434/v1"
+# Option 3: Any OpenAI-compatible API
+BASE_URL_CUSTOM     = "https://api.openai.com/v1"
+
+# Set your preferred endpoint here:
+BASE_URL    = BASE_URL_MINDROUTER  # change to BASE_URL_OLLAMA for local inference
+
 DATASET     = "benchmark_dataset/benchmark_master.json"
 OUTPUT_DIR  = Path("probe_results")
 SLEEP_SEC   = 0.4
 TEMPERATURE = 0.0
 
-# Default max tokens — increased for reasoning models
-MAX_TOKENS_DEFAULT  = 512
-MAX_TOKENS_THINKING = 4096   # phi4-reasoning needs full thinking chain to complete
+# All models use 512 tokens for fair comparison
+MAX_TOKENS = 512
 
-# Models that use thinking/reasoning mode — need special handling
+# Qwen3-32B uses thinking/reasoning mode — content may be in reasoning_content
+# All other models respond directly
 THINKING_MODELS = {
-    "phi4-reasoning:14b",
     "Qwen/Qwen3-32B",
     "qwen3:32b",
 }
@@ -50,7 +59,7 @@ MODELS = [
     "qwen2.5:7b",
     "Qwen/Qwen3-32B",
     "gemma3:12b",
-    "phi4-reasoning:14b",
+    "google/gemma-4-31b",
     "mixtral:8x7b",
 ]
 
@@ -268,8 +277,7 @@ def extract_response_content(choice, model: str) -> str:
     Handles three cases:
       1. Normal models: content is the answer
       2. Qwen3: content=None, answer in reasoning_content
-      3. phi4-reasoning: content has <think>...</think> wrapping the answer
-         Strip <think> block and return only the final answer after </think>
+      3. Qwen3: may have <think>...</think> wrapping — strip and return final answer
     """
     content = choice.message.content
 
@@ -301,7 +309,7 @@ def extract_response_content(choice, model: str) -> str:
 def call_model(client: OpenAI, model: str, prompt: str,
                is_thinking: bool = False) -> dict:
     """Call MindRouter API and return response dict."""
-    max_tokens = MAX_TOKENS_THINKING if is_thinking else MAX_TOKENS_DEFAULT
+    max_tokens = MAX_TOKENS  # same for all models — ensures fair comparison
     try:
         response = client.chat.completions.create(
             model=model,
@@ -382,7 +390,7 @@ def run(api_key: str, models: list, limit: int = None):
         print(f"\n{'='*60}")
         print(f"Model: {model}")
         print(f"Output: {output_file}")
-        print(f"Thinking mode: {'YES (max_tokens=4096, </think> stripper active)' if is_thinking else 'NO (max_tokens=512)'}")
+        print(f"Thinking mode: {'YES (reasoning_content fallback active)' if is_thinking else 'NO'}  |  max_tokens={MAX_TOKENS}")
         print(f"Already completed: {len(completed):,} calls")
         print(f"{'='*60}")
 
@@ -430,11 +438,20 @@ def run(api_key: str, models: list, limit: int = None):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--api_key",    required=True)
+    parser.add_argument("--api_key",    required=True,
+                        help="API key. Use 'ollama' for local Ollama inference.")
     parser.add_argument("--model",      default=None)
     parser.add_argument("--all_models", action="store_true")
     parser.add_argument("--limit",      type=int, default=None)
+    parser.add_argument("--base_url",   default=None,
+                        help="API base URL. Defaults to MindRouter. "
+                             "Use http://localhost:11434/v1 for Ollama.")
     args = parser.parse_args()
+
+    # Override BASE_URL if provided
+    if args.base_url:
+        global BASE_URL
+        BASE_URL = args.base_url
 
     if args.all_models:
         selected = MODELS
