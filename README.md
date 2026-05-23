@@ -16,6 +16,8 @@
 
 We evaluate **10 open-source LLMs** across **5 prompt formats**, **5 organisms**, and **3 GO namespaces**, yielding **150,000 API calls** on a curated benchmark of **1,000 proteins** from UniProt Swiss-Prot with experimental evidence-only annotations.
 
+GO semantic similarity validation using GOSemSim confirms that LLM predictions are biologically meaningful beyond chance, exceeding random baselines by **2.6–3.2×** across all namespaces — showing that low exact F1 scores reflect a precision deficit rather than random guessing.
+
 ---
 
 ## Key Findings
@@ -30,6 +32,7 @@ We evaluate **10 open-source LLMs** across **5 prompt formats**, **5 organisms**
 | Model pairs significantly different | **42 / 45** (Wilcoxon, Bonferroni-corrected) |
 | Dominant failure mode | Complete miss **68.71%** — not hallucination (8.65%) |
 | Fully correct predictions | Only **0.34%** |
+| Semantic similarity vs random | LLMs exceed random by **2.6–3.2×** across all namespaces |
 
 ---
 
@@ -46,7 +49,13 @@ PROBE/
 │   ├── evaluation.py                  # F1, Precision, Recall, Hallucination Rate
 │   ├── statistical_tests.py           # Wilcoxon, Friedman, Kruskal-Wallis, Cohen's d
 │   ├── error_analysis.py              # 5-category error classification
-│   └── visualization.py              # 7 publication-ready figures
+│   └── visualization.py              # 8 publication-ready figures
+│
+├── semantic_similarity/
+│   ├── semantic_similarity.R          # GOSemSim analysis for top 3 models
+│   ├── random_baseline.R              # Random baseline computation per namespace
+│   ├── semantic_similarity_results.csv # Per-protein semantic similarity scores
+│   └── generate_semsim_figure.py      # Figure 8 generation script
 │
 ├── probe_evaluation/
 │   ├── leaderboard.csv                # Overall model rankings
@@ -65,7 +74,9 @@ PROBE/
 │   ├── fig4_prompt_heatmap.pdf        # Prompt sensitivity heatmap
 │   ├── fig5_hallucination.pdf         # Hallucination rate bar chart
 │   ├── fig6_precision_recall.pdf      # Precision-Recall scatter
-│   └── fig7_f1_boxplot.pdf            # Per-protein F1 distributions
+│   ├── fig7_f1_boxplot.pdf            # Per-protein F1 distributions
+│   ├── fig8_semantic_similarity.pdf   # GO semantic similarity vs random baseline
+│   └── fig8_semantic_similarity.png   # GO semantic similarity vs random baseline (PNG)
 │
 ├── probe_error_analysis/
 │   ├── error_analysis_raw.csv              # Per-record error classification (150,000 rows)
@@ -103,7 +114,8 @@ PROBE/
 ├── .gitignore
 └── README.md
 ```
-> **Note:** The manuscript and LaTeX source will be released upon journal acceptance.
+
+> **Note:** The manuscript and LaTeX source will be released upon journal acceptance.  
 > All 150,000 raw LLM response records are included in `probe_results/` for full reproducibility.
 
 ---
@@ -324,14 +336,15 @@ curl -fsSL https://ollama.ai/install.sh | sh
 ```bash
 ollama pull llama3.3:70b
 ollama pull llama3.1:8b
+ollama pull mistral-large
 ollama pull mistral:7b
-ollama pull qwen2.5:7b
-ollama pull qwen2.5:72b
-ollama pull gemma3:12b
 ollama pull mixtral:8x7b
+ollama pull qwen2.5:72b
+ollama pull qwen2.5:7b
+ollama pull qwen3:32b
+ollama pull gemma3:12b
+ollama pull gemma4:31b
 ```
-
-> Note: Qwen3-32B and Gemma-4-31B may be available as `qwen3:32b` and `gemma4:31b` depending on your Ollama version.
 
 **Run PROBE with Ollama:**
 
@@ -342,7 +355,7 @@ python scripts/llm_prompting.py \
   --model llama3.1:8b
 ```
 
-> **Hardware requirements:** 7B models run on 8GB VRAM. 70B models require 40GB+ VRAM or CPU offloading.
+> **Hardware requirements:** 7B models run on 8GB VRAM. 70B+ models require 40GB+ VRAM or CPU offloading.
 
 #### Option C — Any OpenAI-compatible API
 
@@ -416,6 +429,43 @@ Output: `probe_figures/` — 7 figures as PDF + PNG.
 
 ---
 
+### Step 7 — Semantic Similarity Validation
+
+Install R dependencies:
+
+```r
+install.packages("BiocManager")
+BiocManager::install("GOSemSim")
+BiocManager::install("org.Hs.eg.db")
+BiocManager::install("org.Sc.sgd.db")
+BiocManager::install("org.Mm.eg.db")
+BiocManager::install("org.Dr.eg.db")
+BiocManager::install("org.EcK12.eg.db")
+BiocManager::install("GO.db")
+```
+
+Compute random baselines per namespace:
+
+```r
+source("semantic_similarity/random_baseline.R")
+```
+
+Run semantic similarity for top 3 models:
+
+```r
+source("semantic_similarity/semantic_similarity.R")
+```
+
+Generate Figure 8:
+
+```bash
+python semantic_similarity/generate_semsim_figure.py
+```
+
+Output: `probe_figures/fig8_semantic_similarity.pdf` and `.png`
+
+---
+
 ## Results Summary
 
 ### Leaderboard
@@ -463,6 +513,18 @@ HR = Hallucination Rate · ERR = Empty Response Rate
 | P1 — Zero-shot | 0.060 | 49.8% |
 | P2 — Constrained | 0.060 | 49.1% |
 
+### Semantic Similarity Validation (top 3 models)
+
+| Model | MF Sim | BP Sim | CC Sim | MF Random | BP Random | CC Random |
+|---|---|---|---|---|---|---|
+| Mistral Large 123B | 0.452 | 0.377 | 0.658 | 0.145 | 0.133 | 0.258 |
+| Llama 3.3 70B | 0.478 | 0.373 | 0.654 | 0.145 | 0.133 | 0.258 |
+| Qwen2.5 72B | 0.444 | 0.361 | 0.663 | 0.145 | 0.133 | 0.258 |
+| **Mean** | **0.458** | **0.370** | **0.658** | **0.145** | **0.133** | **0.258** |
+
+LLM predictions exceed random baseline by **3.2× in MF**, **2.8× in BP**, and **2.6× in CC**.  
+Computed using GOSemSim (Wang measure, BMA combination) with namespace-specific random baselines.
+
 ### Error Distribution (all models combined)
 
 | Error Category | % |
@@ -491,11 +553,12 @@ HR = Hallucination Rate · ERR = Empty Response Rate
 If you use PROBE in your research, please cite:
 
 ```bibtex
-@article{naha2025probe,
-  title={{PROBE}: A Cross-Organism Benchmark for Evaluating General-Purpose Large Language Models on Gene Ontology Protein Function},
+@article{naha2026probe,
+  title={{PROBE}: A Cross-Organism Benchmark for Evaluating General-Purpose 
+  Large Language Models on Gene Ontology Protein Function Prediction},
   author={Naha, Kallol and Jamil, Hasan M.},
   journal={BMC Bioinformatics},
-  year={2025},
+  year={2026},
   publisher={BioMed Central}
 }
 ```
