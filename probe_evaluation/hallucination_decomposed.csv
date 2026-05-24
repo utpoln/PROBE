@@ -1,0 +1,11 @@
+model,total_predicted,correct_pct,syntactic_pct,out_of_benchmark_pct,misattribution_pct
+Qwen_Qwen3-32B,51850,7.2,5.3,30.2,57.3
+gemma3-12b,67695,2.7,8.4,42.1,46.8
+google_gemma-4-31b,52446,6.5,8.5,37.1,47.9
+llama3.1-8b,45676,6.2,5.3,36.3,52.3
+llama3.3-70b,75968,6.7,4.5,42.9,45.9
+mistral-7b,91923,3.2,7.4,44.8,44.7
+mistral-large-123b,75021,6.6,5.7,42.4,45.3
+mixtral-8x7b,91226,4.2,7.4,47.9,40.6
+qwen2.5-72b,66664,7.1,5.2,34.0,53.7
+qwen2.5-7b,36630,4.7,8.2,44.5,42.6
