@@ -1,0 +1,6 @@
+model,type,n,precision,recall,f1
+Mistral Large 123B,"Open, 1000-protein reference",3000,0.1038,0.1204,0.0992
+Claude Sonnet 4.6,Closed (50-protein sample),150,0.1316,0.1496,0.1272
+Gemini 2.5 Pro,Closed (50-protein sample),150,0.1227,0.1408,0.1178
+GPT-5.4,Closed (50-protein sample),150,0.1364,0.1189,0.1163
+Gemini 2.5 Flash,Closed (50-protein sample),149,0.1678,0.0594,0.0817

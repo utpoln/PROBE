@@ -1,0 +1,4 @@
+category,n_sampled,n_present_experimental,n_present_non_experimental,n_absent_current,n_protein_not_found,pct_validated,ci95_lower_pct,ci95_upper_pct
+out_of_benchmark,120,0,0,120,0,0.0,0.0,3.03
+misattribution,120,1,2,117,0,2.5,0.52,7.13
+combined,240,1,2,237,0,1.25,0.26,3.61

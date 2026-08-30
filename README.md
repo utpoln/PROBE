@@ -1,4 +1,4 @@
-# PROBE: A Cross-Organism Benchmark for Evaluating General-Purpose Large Language Models on Gene Ontology Protein Function Prediction
+# PROBE: A Multi-Organism Benchmark for Evaluating General-Purpose Large Language Models on Gene Ontology Protein Function Annotation
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
@@ -12,13 +12,13 @@
 
 ## Overview
 
-**PROBE** (**PR**otein functi**O**n **B**enchmark **E**valuation) is the first systematic benchmark for evaluating whether general-purpose Large Language Models (LLMs) can predict Gene Ontology (GO) protein function terms in a **zero-shot, inference-only setting** — no fine-tuning, no retrieval augmentation.
+**PROBE** (**PR**otein functi**O**n **B**enchmark **E**valuation) is a systematic benchmark for evaluating whether general-purpose Large Language Models (LLMs) can map natural-language descriptions of experimentally characterized protein function onto Gene Ontology (GO) terms, in a **zero-shot, inference-only setting** — no fine-tuning, no retrieval augmentation. This is deliberately **not** a CAFA-style sequence/structure-to-function prediction task: in four of our five prompt formats the model is given the protein's identity and its known Swiss-Prot FUNCTION text, and asked to map that description onto the correct controlled-vocabulary GO terms.
 
 We evaluate **10 open-source LLMs** across **5 prompt formats**, **5 organisms**, and **3 GO namespaces**, yielding **150,000 API calls** on a curated benchmark of **1,000 proteins** from UniProt Swiss-Prot with experimental evidence-only annotations.
 
-A focused supplementary comparison of **4 leading closed-source models** (Claude Sonnet 4.6, Gemini 2.5 Pro, GPT-5.4, Gemini 2.5 Flash) confirms that the annotation deficit is a fundamental LLM limitation regardless of model source or scale — the gap between best closed-source and best open-source is only **0.002 F1 points**.
+A focused, preliminary comparison of **4 leading closed-source models** (Claude Sonnet 4.6, Gemini 2.5 Pro, GPT-5.4, Gemini 2.5 Flash) on a 50-protein subset finds closed-source F1 scores of 0.081–0.127, exceeding the same-convention open-source reference (Mistral Large 123B, F1 = 0.099 on the full 1,000-protein benchmark) by a **0.028 F1-point gap** — comfortably inside the closed-source models' own 0.046-point spread. Given the small, single-run sample, this is exploratory evidence that current GO-mapping limitations are not unique to open-source models, not a definitive claim about model source or scale.
 
-GO semantic similarity validation (Wang/BMA via GOSemSim) confirms that LLM predictions are biologically meaningful beyond chance, exceeding random baselines by **2.1–2.5×** across all namespaces — showing that low exact F1 scores reflect a precision deficit rather than random guessing.
+GO semantic similarity analysis (Wang/BMA via GOSemSim) shows that LLM predictions exceed random baselines by **2.1–2.6×** across all namespaces, indicating biologically meaningful semantic alignment even when exact identifier matching fails.
 
 ---
 
@@ -26,13 +26,13 @@ GO semantic similarity validation (Wang/BMA via GOSemSim) confirms that LLM pred
 
 | # | Finding | Result |
 |---|---|---|
-| 1 | Best open-source model (Mistral Large 123B) | Macro-F1 = **9.3%** — far below specialized tools |
-| 2 | Most-frequent-5 heuristic beats 4/10 LLMs | F1 = **0.062** outperforms Gemma3 12B, Mistral 7B, Qwen2.5 7B, Mixtral 8×7B |
-| 3 | Hallucination decomposed | Syntactic **6.6%** · Out-of-benchmark **40.2%** · Misattribution **47.7%** |
-| 4 | Best organism | *S. cerevisiae* (yeast) > *H. sapiens* — literature density effect |
-| 5 | Best prompt format | P5 candidate selection — reduces hallucination by **33.5 pp** |
-| 6 | Semantic similarity vs random | LLMs exceed random by **2.1–2.5×** across all namespaces |
-| 7 | Closed-source gap | Best closed (Claude Sonnet 4.6, F1=0.127) vs best open (Mistral Large, F1=0.125) — gap of only **0.002** |
+| 1 | Best open-source model (Mistral Large 123B) | Macro-F1 = **9.3%** — far below specialized tools; a parameter-free most-frequent-5 heuristic (F1 = 0.062) beats 4/10 LLMs |
+| 2 | Benchmark-unmatched predictions decomposed | Syntactic **6.6%** · Out-of-benchmark **40.2%** · Misattribution **47.7%** — a temporal-holdout check found only **1.25%** of a sampled subset are supported by GO annotations added since the benchmark was built |
+| 3 | Organism performance | *S. cerevisiae* (yeast) > *H. sapiens*, but the pattern does **not** track evolutionary distance and is not explained by literature density or annotation-pool size at $n=5$ organisms (Spearman r=0.50, p=0.39 for both) — exploratory, not causal |
+| 4 | Best prompt format | P5 candidate selection — reduces the unmatched-prediction rate by **33.5 pp**; note P5 is constrained selection, not open-ended generation, and is not directly comparable to P1–P4 |
+| 5 | Semantic similarity vs random | LLM predictions exceed random by **2.1–2.6×** across all namespaces, indicating biologically meaningful semantic alignment |
+| 6 | P3 few-shot contamination check | The 3 exemplars (TP53, EGFR, ACT1) are absent from the test set — rules out prompt-to-test-set leakage only, not pre-training memorization |
+| 7 | Closed-source comparison (preliminary) | 4 closed models score 0.081–0.127 F1 on 50 proteins vs. 0.099 F1 for the same-convention open-source reference — a 0.028-point gap, within the closed models' own 0.046-point spread; not a definitive scale/source comparison |
 
 ---
 
@@ -51,7 +51,9 @@ PROBE/
 │   ├── error_analysis.py                  # 5-category error classification
 │   ├── visualization.py                   # Publication-ready figures (fig1–fig7)
 │   ├── hallucination_decompose.py         # Decompose HR into syntactic/out-of-bench/misattr
+│   ├── temporal_holdout_validation.py     # Validate unmatched predictions vs. current UniProt
 │   ├── closed_source_eval.py              # Closed-source model evaluation (P5, 50 proteins)
+│   ├── closed_source_reference.py         # Open-source reference row, consistent convention
 │   ├── ablation_function_text.py          # FUNCTION text ablation study (A1/A2/A3)
 │   ├── confidence_intervals.py            # Bootstrap 95% CIs for all metrics
 │   ├── literature_density.py              # PubMed organism correlation analysis
@@ -70,6 +72,7 @@ PROBE/
 │   ├── evaluation_raw.csv                 # Raw per-prediction scores (150,000 rows)
 │   ├── hallucination_decomposed.csv       # Hallucination decomposition (a/b/c)
 │   ├── semantic_similarity_results_all10.csv  # Wang/BMA scores all 10 models
+│   ├── closed_source_reference.csv        # Closed- vs. open-source comparison (one convention)
 │   └── PROBE_results.xlsx                 # All tables in one Excel workbook
 │
 ├── probe_figures/
@@ -106,6 +109,8 @@ PROBE/
 │   ├── ci_summary.txt                     # CI summary in plain text
 │   ├── semantic_f1_leaderboard.csv        # Jaccard semantic F1 vs exact F1
 │   ├── literature_density.csv             # PubMed counts and Spearman correlations
+│   ├── temporal_holdout_sample.csv        # Per-prediction temporal-holdout validation detail
+│   ├── temporal_holdout_summary.csv       # Temporal-holdout validation summary + 95% CIs
 │   └── PROBE_statistical_tests.xlsx       # All statistical results in one workbook
 │
 ├── probe_results/                         # 10 open-source model raw responses
@@ -187,15 +192,17 @@ All models evaluated at T=0, max 512 tokens, no system prompt, inference only.
 
 ### Closed-Source (supplementary — P5 only, 50 proteins)
 
-| Model | Provider | F1 | Prec | Recall |
-|---|---|---|---|---|
-| Claude Sonnet 4.6 | Anthropic | 0.127 | 0.132 | 0.150 |
-| Gemini 2.5 Pro | Google | 0.118 | 0.123 | 0.141 |
-| GPT-5.4 | OpenAI | 0.116 | 0.136 | 0.119 |
-| Gemini 2.5 Flash | Google | 0.081 | 0.167 | 0.059 |
-| **Mistral Large 123B (open)** | — | **0.125** | **0.131** | **0.152** |
+| Model | Provider | N | F1 | Prec | Recall |
+|---|---|---|---|---|---|
+| Claude Sonnet 4.6 | Anthropic | 150 | 0.127 | 0.132 | 0.150 |
+| Gemini 2.5 Pro | Google | 150 | 0.118 | 0.123 | 0.141 |
+| GPT-5.4 | OpenAI | 150 | 0.116 | 0.136 | 0.119 |
+| Gemini 2.5 Flash | Google | 150 | 0.081 | 0.167 | 0.059 |
+| **Mistral Large 123B (open, 1,000-protein reference)** | — | **3,000** | **0.099** | **0.104** | **0.120** |
 
-Gap between best closed-source and best open-source: **0.002 F1 points**.
+N = number of protein×namespace instances underlying each F1 (the macro-F1 denominator); the 20× difference in N (150 vs. 3,000) means these rows are **not strictly comparable**. Both closed- and open-source rows use the identical scoring convention (see `scripts/closed_source_reference.py`): every protein/namespace pair is included in the macro-average, scoring 0 for pairs without an experimental annotation in that namespace.
+
+Gap between best closed-source (Claude Sonnet 4.6, F1 = 0.127) and the open-source reference (F1 = 0.099): **0.028 F1 points** — comfortably inside the closed-source models' own 0.081–0.127 spread. Given the 50-protein, single-run sample, we treat this as a preliminary, exploratory observation, not a definitive comparison across model source or scale.
 
 ---
 
@@ -205,7 +212,7 @@ Gap between best closed-source and best open-source: **0.002 F1 points**.
 |---|---|---|
 | P1 | Zero-shot | Free GO term prediction, no examples or constraints |
 | P2 | Constrained | Namespace-restricted zero-shot with strict format rules |
-| P3 | Few-shot (3-shot) | 3 examples: TP53, EGFR, ACT1 (verified absent from test set — no contamination) |
+| P3 | Few-shot (3-shot) | 3 examples: TP53, EGFR, ACT1 (verified absent from test set — rules out prompt-to-test-set leakage; does not test pre-training memorization) |
 | P4 | Chain-of-thought | Step-by-step biological reasoning before prediction |
 | P5 | Candidate selection | Select from 15 pre-validated GO terms per namespace |
 
@@ -393,6 +400,14 @@ Requires `go-basic.obo` (included). Decomposes hallucination rate into:
 - **(b) Out-of-benchmark** — valid GO ID not in reference set R
 - **(c) Misattribution** — valid GO ID in R but wrong protein
 
+### Step 6b — Temporal-Holdout Validation
+
+```bash
+python scripts/temporal_holdout_validation.py
+```
+
+Requires network access to `rest.uniprot.org`. Samples 120 out-of-benchmark and 120 misattribution predictions and checks whether each is now supported by a **current** UniProt annotation, testing whether the unmatched-prediction rate reflects GO/Swiss-Prot incompleteness rather than genuine model error. Output: `probe_statistics/temporal_holdout_sample.csv` and `temporal_holdout_summary.csv`.
+
 ### Step 7 — Generate Figures
 
 ```bash
@@ -457,6 +472,14 @@ python scripts/closed_source_eval.py \
   --provider google
 ```
 
+### Step 13 — Closed- vs. Open-Source Reference (one consistent convention)
+
+```bash
+python scripts/closed_source_reference.py --model mistral-large-123b
+```
+
+Recomputes the open-source reference row (Mistral Large 123B, P5, full 1,000-protein benchmark) under the identical scoring convention used for the closed-source models, and writes the full comparison table. Output: `probe_evaluation/closed_source_reference.csv`.
+
 ---
 
 ## Results Summary
@@ -497,6 +520,8 @@ HR = Hallucination Rate · ERR = Empty Response Rate
 
 The dominant failure mode is **misattribution (47.7%)** — models predict valid GO terms but assign them to the wrong protein. Syntactic hallucination (predicting non-existent GO IDs) accounts for only **6.6%**.
 
+Because GO/Swiss-Prot annotations are incomplete, a term absent from the benchmark reference set is not automatically biologically incorrect. `scripts/temporal_holdout_validation.py` tests this directly by sampling 120 out-of-benchmark and 120 misattribution predictions and checking whether they are now supported by **current** UniProt annotations (queried well after the Swiss-Prot 2024\_03 release the benchmark was built from). Only **1.25%** (3/240, 95% CI 0.26–3.61%) validate — evidence that the unmatched-prediction rate mostly reflects genuine errors rather than an incomplete reference set. See `probe_statistics/temporal_holdout_summary.csv` for the full result.
+
 ### Semantic Similarity (Wang/BMA, GOSemSim)
 
 | Model | MF | BP | CC |
@@ -534,6 +559,8 @@ All models exceed the random baseline in all namespaces (2.5× MF · 2.2× BP ·
 | *M. musculus* (mouse) | 0.065 |
 | *D. rerio* (zebrafish) | 0.026 |
 
+Performance does not track evolutionary distance to humans (yeast and *E. coli* outperform mouse), but with only 5 organisms neither literature density nor annotation-pool size reaches statistical significance as an explanation (Spearman r=0.50, p=0.39 for both; see `scripts/literature_density.py` and `probe_statistics/literature_density.csv`) — treat this as an exploratory observation, not an established causal mechanism. All 5 organisms are well-studied, well-annotated model organisms; results may not generalize to less-characterized, sparse-literature species.
+
 ### By Prompt Format (avg across models)
 
 | Prompt | Avg F1 | Avg HR |
@@ -553,7 +580,7 @@ All models exceed the random baseline in all namespaces (2.5× MF · 2.2× BP ·
 | A3 — Full FUNCTION text | 0.125 | 0.097 | 0.100 |
 | Drop A3→A1 (relative) | 5.0% | 13.4% | 2.9% |
 
-Performance drop when FUNCTION text is removed is small (2.9–13.4%), confirming that PROBE measures **genuine pre-training biological knowledge**, not text extraction ability.
+The performance drop when FUNCTION text is removed is small (2.9–13.4%), suggesting that PROBE performance is not primarily dependent on extracting information from the supplied FUNCTION comment. This is evidence against pure text-extraction as the explanation for PROBE performance, but the ablation cannot isolate the specific source of the remaining performance or distinguish memorization of protein-specific facts from broader biological reasoning.
 
 ### Statistical Results
 
@@ -562,7 +589,7 @@ Performance drop when FUNCTION text is removed is small (2.9–13.4%), confirmin
 - **10/10** models: namespace, organism, and prompt format effects significant (p<0.001)
 - P5 is best prompt for **7/10** models
 - Mistral Large 123B and Llama 3.3 70B are **statistically indistinguishable** (p=0.511) — both treated as co-best
-- P3 exemplars (TP53, EGFR, ACT1) verified absent from test set — **no benchmark contamination**
+- P3 exemplars (TP53, EGFR, ACT1) verified absent from test set — rules out **prompt-to-test-set leakage** for these examples; does not establish absence of pre-training memorization
 
 ---
 
@@ -572,8 +599,8 @@ If you use PROBE in your research, please cite:
 
 ```bibtex
 @article{naha2026probe,
-  title={{PROBE}: A Cross-Organism Benchmark for Evaluating General-Purpose
-         Large Language Models on Gene Ontology Protein Function Prediction},
+  title={{PROBE}: A Multi-Organism Benchmark for Evaluating General-Purpose
+         Large Language Models on Gene Ontology Protein Function Annotation},
   author={Naha, Kallol and Jamil, Hasan M.},
   journal={BMC Bioinformatics},
   year={2026},
